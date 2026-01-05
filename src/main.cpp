@@ -1,7 +1,16 @@
+#include "Vehicle.hpp" 
+#include "TelemetryManager.hpp" 
+#include "SimulationController.hpp"
 #include <iostream> 
-int main() 
-{ 
-    std::cout << "Telemetry project initialized.\n"; 
-    std::cin.get(); // waits for Enter
-    return 0; 
+#include <thread> 
+#include <chrono> 
+#include <conio.h> // for _kbhit()
+
+int main() { 
+	Vehicle vehicle; 
+	TelemetryManager telemetry(vehicle); 
+	SimulationController controller;
+
+	controller.run(vehicle, telemetry); 
+	return 0;
 }

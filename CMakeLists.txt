@@ -11,5 +11,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 # Collect all .cpp files automatically 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp" )
 
+message(STATUS "Sources: ${SOURCES}")
+
 # Create the executable 
 add_executable(telemetry ${SOURCES})

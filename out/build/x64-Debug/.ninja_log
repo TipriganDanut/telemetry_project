@@ -1,8 +1,17 @@
 # ninja log v6
-21	1215	7893207043333491	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
-15	376	7893207043277864	CMakeFiles/telemetry.dir/src/Vehicle.cpp.obj	44d69caf65c77f4d
-1216	1415	7893207055279801	telemetry.exe	e266f296f54b9503
-6	377	7893207043182123	CMakeFiles/telemetry.dir/src/Battery.cpp.obj	ede96c2dbbe67442
-10	375	7893207043227799	CMakeFiles/telemetry.dir/src/Engine.cpp.obj	10ae6843bbcfc9d5
-19	1319	7893224397229560	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
-1319	1464	7893224410228783	telemetry.exe	e266f296f54b9503
+31	92	7893427800090261	CMakeFiles/telemetry.dir/src/Vehicle.cpp.obj	44d69caf65c77f4d
+27	1014	7893427800040192	CMakeFiles/telemetry.dir/src/TelemetryManager.cpp.obj	e1d472fe3defe6a3
+37	1864	7893427800150232	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
+21	35	7893427782002779	clean	8915ce5c7076a68a
+17	1191	7893427799950605	CMakeFiles/telemetry.dir/src/Engine.cpp.obj	10ae6843bbcfc9d5
+22	1791	7893427799990183	CMakeFiles/telemetry.dir/src/SimulationController.cpp.obj	fe26b50dbe845772
+13	1171	7893427799910576	CMakeFiles/telemetry.dir/src/Battery.cpp.obj	ede96c2dbbe67442
+1864	2037	7893427818413763	telemetry.exe	84a6e568ceca8c14
+22	37	7893457611040760	clean	8915ce5c7076a68a
+39	370	7893457631396674	CMakeFiles/telemetry.dir/src/Vehicle.cpp.obj	44d69caf65c77f4d
+32	1215	7893457631325722	CMakeFiles/telemetry.dir/src/TelemetryManager.cpp.obj	e1d472fe3defe6a3
+17	1379	7893457631178816	CMakeFiles/telemetry.dir/src/Battery.cpp.obj	ede96c2dbbe67442
+22	1382	7893457631233970	CMakeFiles/telemetry.dir/src/Engine.cpp.obj	10ae6843bbcfc9d5
+45	1947	7893457631457284	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
+27	2007	7893457631275648	CMakeFiles/telemetry.dir/src/SimulationController.cpp.obj	fe26b50dbe845772
+2007	2166	7893457651079574	telemetry.exe	84a6e568ceca8c14

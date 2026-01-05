@@ -67,6 +67,24 @@ build CMakeFiles\telemetry.dir\src\Engine.cpp.obj: CXX_COMPILER__telemetry_unsca
   TARGET_COMPILE_PDB = CMakeFiles\telemetry.dir\
   TARGET_PDB = telemetry.pdb
 
+build CMakeFiles\telemetry.dir\src\SimulationController.cpp.obj: CXX_COMPILER__telemetry_unscanned_Debug C$:\Users\Danut\source\repos\telemetry_project\src\SimulationController.cpp || cmake_object_order_depends_target_telemetry
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd
+  INCLUDES = -IC:\Users\Danut\source\repos\telemetry_project\include
+  OBJECT_DIR = CMakeFiles\telemetry.dir
+  OBJECT_FILE_DIR = CMakeFiles\telemetry.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\telemetry.dir\
+  TARGET_PDB = telemetry.pdb
+
+build CMakeFiles\telemetry.dir\src\TelemetryManager.cpp.obj: CXX_COMPILER__telemetry_unscanned_Debug C$:\Users\Danut\source\repos\telemetry_project\src\TelemetryManager.cpp || cmake_object_order_depends_target_telemetry
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd
+  INCLUDES = -IC:\Users\Danut\source\repos\telemetry_project\include
+  OBJECT_DIR = CMakeFiles\telemetry.dir
+  OBJECT_FILE_DIR = CMakeFiles\telemetry.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\telemetry.dir\
+  TARGET_PDB = telemetry.pdb
+
 build CMakeFiles\telemetry.dir\src\Vehicle.cpp.obj: CXX_COMPILER__telemetry_unscanned_Debug C$:\Users\Danut\source\repos\telemetry_project\src\Vehicle.cpp || cmake_object_order_depends_target_telemetry
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd
@@ -93,7 +111,7 @@ build CMakeFiles\telemetry.dir\src\main.cpp.obj: CXX_COMPILER__telemetry_unscann
 #############################################
 # Link the executable telemetry.exe
 
-build telemetry.exe: CXX_EXECUTABLE_LINKER__telemetry_Debug CMakeFiles\telemetry.dir\src\Battery.cpp.obj CMakeFiles\telemetry.dir\src\Engine.cpp.obj CMakeFiles\telemetry.dir\src\Vehicle.cpp.obj CMakeFiles\telemetry.dir\src\main.cpp.obj
+build telemetry.exe: CXX_EXECUTABLE_LINKER__telemetry_Debug CMakeFiles\telemetry.dir\src\Battery.cpp.obj CMakeFiles\telemetry.dir\src\Engine.cpp.obj CMakeFiles\telemetry.dir\src\SimulationController.cpp.obj CMakeFiles\telemetry.dir\src\TelemetryManager.cpp.obj CMakeFiles\telemetry.dir\src\Vehicle.cpp.obj CMakeFiles\telemetry.dir\src\main.cpp.obj
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
