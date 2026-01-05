@@ -1,0 +1,52 @@
+# ============================
+# Visual Studio / VS Insiders
+# ============================
+.vs/
+*.vcxproj*
+*.vcxproj.filters
+*.sln
+
+# ============================
+# CMake build folders
+# ============================
+/out/
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+*.ninja_deps
+*.ninja_log
+
+# ============================
+# Compiled binaries
+# ============================
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+*.ilk
+
+# ============================
+# OS-specific files
+# ============================
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS (if you ever sync across systems)
+.DS_Store
+
+# ============================
+# Logs and temporary files
+# ============================
+*.log
+*.tmp
+
+# ============================
+# Editor / Tooling
+# ============================
+# VS Code (if you ever use it)
+.vscode/

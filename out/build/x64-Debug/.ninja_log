@@ -1,8 +1,8 @@
 # ninja log v6
-6	1392	7893200860346871	CMakeFiles/telemetry.dir/src/main.cpp.obj	9aaba8d436826d97
-1393	1693	7893200874223824	telemetry.exe	7744f63d9e93b159
-10	375	7893207043227799	CMakeFiles/telemetry.dir/src/Engine.cpp.obj	10ae6843bbcfc9d5
-15	376	7893207043277864	CMakeFiles/telemetry.dir/src/Vehicle.cpp.obj	44d69caf65c77f4d
-6	377	7893207043182123	CMakeFiles/telemetry.dir/src/Battery.cpp.obj	ede96c2dbbe67442
 21	1215	7893207043333491	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
+15	376	7893207043277864	CMakeFiles/telemetry.dir/src/Vehicle.cpp.obj	44d69caf65c77f4d
 1216	1415	7893207055279801	telemetry.exe	e266f296f54b9503
+6	377	7893207043182123	CMakeFiles/telemetry.dir/src/Battery.cpp.obj	ede96c2dbbe67442
+10	375	7893207043227799	CMakeFiles/telemetry.dir/src/Engine.cpp.obj	10ae6843bbcfc9d5
+19	1319	7893224397229560	CMakeFiles/telemetry.dir/src/main.cpp.obj	2fba0bd0b8b8d518
+1319	1464	7893224410228783	telemetry.exe	e266f296f54b9503
