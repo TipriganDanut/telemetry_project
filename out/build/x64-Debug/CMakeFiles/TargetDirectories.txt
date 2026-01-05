@@ -1,0 +1,3 @@
+C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/CMakeFiles/telemetry.dir
+C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
