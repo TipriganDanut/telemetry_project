@@ -1,14 +1,20 @@
 #pragma once 
 #include "Vehicle.hpp" 
-#include "TelemetryManager.hpp" 
+#include "TelemetryManager.hpp"
+#include <atomic>
 
 class SimulationController { 
 public: 
 	SimulationController(); 
 	
-	void run(Vehicle& vehicle, TelemetryManager& telemetry);
+	void start();
+	void pause();
+	void resume();
+	void stop();
+	bool isRunning() const;
+	void simulationLoop(Vehicle&, TelemetryManager&);
 
 private: 
-	bool running;
-	bool paused;
+	std::atomic<bool> running;
+	std::atomic<bool> paused;
 };

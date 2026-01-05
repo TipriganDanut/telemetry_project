@@ -5,38 +5,43 @@
 #include <chrono> 
 
 SimulationController::SimulationController() 
-	: running(false), paused(false) {}
+	: running(false), paused(false) {} // This ensures the simulation thread won’t start doing anything until I explicitly call start()
 
-void SimulationController::run(Vehicle& vehicle, TelemetryManager& telemetry) {
-	running = true; paused = false; 
+void SimulationController::start() {
+	running = true; paused = false;
+}
+
+bool SimulationController::isRunning() const {
+	return running; 
+}
+
+void SimulationController::pause() {
+	paused = true;	
+}
+void SimulationController::resume() {
+	paused = false;
+}
+void SimulationController::stop() {
+	running = false;
+}
+
+void SimulationController::simulationLoop(Vehicle& vehicle, TelemetryManager& telemetry) {
+	{		
+		while (running)
+		{
+			if (paused)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			}
+			else
+			{
+				vehicle.update();
+				std::cout << telemetry.collectData() << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			}
+		}
+
+	}
 	
-	std::cout << "Controls:\n"; 
-	std::cout << " P = pause\n"; 
-	std::cout << " R = resume\n"; 
-	std::cout << " Q = quit\n\n"; 
 	
-	// Clear buffered keys 
-	while (_kbhit()) _getch(); 
-	while (running) { 
-		// Handle keyboard commands 
-		if (_kbhit()) {
-			char key = _getch();
-			if (key == 'p' || key == 'P') {
-				paused = true; 
-				std::cout << "[Simulation paused]\n";
-			} else if (key == 'r' || key == 'R') {
-				paused = false; 
-				std::cout << "[Simulation resumed]\n"; 
-			} else if (key == 'q' || key == 'Q') {
-				running = false; 
-				break; 
-			} 
-		} 
-		if (!paused) { 
-				vehicle.update(); 
-				std::cout << telemetry.collectData() << std::endl; 
-		} 
-		std::this_thread::sleep_for(std::chrono::seconds(1)); 
-	} 
-	std::cout << "Simulation stopped.\n"; 
 }
