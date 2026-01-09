@@ -4,12 +4,16 @@
 class Vehicle { 
 public: 
 	Vehicle(); 
+
 	Engine& getEngine(); 
 	Battery& getBattery(); 
+
+	int getVehicleSpeed() const;
 
 	void update(); 
 
 private: 
 	Engine engine; 
-	Battery battery; 
+	Battery battery;
+	int vehicleSpeed;
 };

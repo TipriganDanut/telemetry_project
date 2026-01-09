@@ -51,7 +51,7 @@ void SimulationController::simulationLoop() {
 			vehicle.update();
 			TelemetryData data = telemetry.collectData();
 			emit telemetryUpdated(data);
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 		}
 	}
 

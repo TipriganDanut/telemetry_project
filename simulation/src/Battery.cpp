@@ -4,6 +4,7 @@ Battery::Battery() : charge(100.0f), voltage(12.6f) {}
 
 float Battery::getCharge() const { return charge; } 
 float Battery::getVoltage() const { return voltage; } 
+float Battery::getTemperature() const { return this->temperature; }
 
 void Battery::update() { 
 	static std::random_device rd;
