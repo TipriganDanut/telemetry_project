@@ -64,3 +64,4 @@ Desktop.ini
 # Qt’s auto‑generated folders
 # ============================
 *_autogen/
+.qtcreator/
