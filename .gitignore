@@ -11,6 +11,7 @@
 # ============================
 /out/
 /build/
+/build-*/
 /CMakeFiles/
 /CMakeCache.txt
 cmake_install.cmake
@@ -18,6 +19,7 @@ Makefile
 *.ninja
 *.ninja_deps
 *.ninja_log
+
 
 # ============================
 # Compiled binaries
@@ -28,6 +30,13 @@ Makefile
 *.obj
 *.pdb
 *.ilk
+
+# ============================
+# SQLite database files
+# ============================
+*.db
+*.sqlite
+*.sqlite3
 
 # ============================
 # OS-specific files
@@ -50,3 +59,8 @@ Desktop.ini
 # ============================
 # VS Code (if you ever use it)
 .vscode/
+
+# ============================
+# Qt’s auto‑generated folders
+# ============================
+*_autogen/
