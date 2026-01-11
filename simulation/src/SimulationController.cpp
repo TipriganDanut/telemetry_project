@@ -8,7 +8,9 @@ SimulationController::SimulationController(Vehicle& v, TelemetryManager& t)
 	: running(false), /*This ensures the simulation thread won’t start doing anything until I explicitly call start() */
 	paused(false),
 	vehicle(v),		/* initialize reference - bind my member vehicle to refer to the object passed in as v */ 
-	telemetry(t)	/* initialize reference - bind my member vehicle to refer to the object passed in as v */ {} 
+	telemetry(t),	/* initialize reference - bind my member vehicle to refer to the object passed in as v */
+	db("telemetry.db"), // creates or opens the DB */
+	repo(db) /* repository bound to this DB */ {} 
 
 void SimulationController::start() {
 	if (running) {
@@ -48,9 +50,18 @@ void SimulationController::simulationLoop() {
 		}
 		else
 		{
+			// Update vehicle state
 			vehicle.update();
+
+			// Collect telemetry snapshot
 			TelemetryData data = telemetry.collectData();
+
+			// Persist to SQLite
+			repo.insert(data, data.timestamp);
+
+			// Notify GUI
 			emit telemetryUpdated(data);
+
 			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 		}
 	}

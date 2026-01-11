@@ -7,4 +7,5 @@ struct TelemetryData {
 	double batteryCharge = 0.0; 
 	double batteryVoltage = 0.0;
 	double batteryTemperature = 0.0;
+	long long timestamp;
 };

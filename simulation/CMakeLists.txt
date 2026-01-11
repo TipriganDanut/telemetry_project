@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.16) 
 
-# If SimulationLib uses Qt types (QObject, signals/slots)
-find_package(Qt6 REQUIRED COMPONENTS Core) 
-
 add_library(SimulationLib 
 	src/Battery.cpp
 	src/Engine.cpp
@@ -22,5 +19,6 @@ target_include_directories(SimulationLib PUBLIC
 )
 
 target_link_libraries(SimulationLib PUBLIC 
-	Qt6::Core
-)
+	Qt6::Core 
+	PersistenceLib 
+) 

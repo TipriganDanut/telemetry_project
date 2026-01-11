@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/cmake_install.cmake",
-		"C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/simulation/cmake_install.cmake",
-		"C:/Users/Danut/source/repos/telemetry_project/out/build/x64-Debug/gui/VehicleTelemetryGUI/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

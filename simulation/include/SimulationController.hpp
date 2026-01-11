@@ -1,6 +1,8 @@
 #pragma once 
 #include "Vehicle.hpp" 
 #include "TelemetryManager.hpp"
+#include "Database.h"
+#include "TelemetryRepository.h"
 #include <atomic>
 #include <QObject>
 #include <thread>
@@ -29,6 +31,9 @@ private:
 	TelemetryManager& telemetry;
 
 	std::thread simThread;
+
+	Database db; 
+	TelemetryRepository repo;
 
 signals: 
 	void telemetryUpdated(const TelemetryData& data);
