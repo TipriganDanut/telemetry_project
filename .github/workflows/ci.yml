@@ -15,7 +15,7 @@ jobs:
           - name: Install Qt 
             uses: jurplel/install-qt-action@v3 
             with: 
-                version: 6.6.0 
+                version: 6.10.1
                 host: windows 
                 target: desktop 
                 modules: qtcharts 
@@ -32,11 +32,13 @@ jobs:
             run: | 
                 choco install ninja cmake sqlite -y 
                 
-          - name: Configure (MSVC) 
-            shell: cmd 
-            run: | 
+          - name: Configure (MSVC)
+            shell: cmd
+            run: |
               "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-              cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+              cmake -S . -B build -G "Ninja" ^
+                -DCMAKE_BUILD_TYPE=Release ^
+                -DCMAKE_PREFIX_PATH="%Qt6_INSTALL_DIR%"
                 
           - name: Build 
             shell: cmd 
@@ -53,15 +55,7 @@ jobs:
                 throw "Executable not found at $exePath"
               }
 
-              if (-not $Env:Qt6_INSTALL_DIR) {
-                throw "Qt6_INSTALL_DIR is not set"
-              }
-
               $qtBin = Join-Path $Env:Qt6_INSTALL_DIR "bin\windeployqt.exe"
-
-              if (-not (Test-Path $qtBin)) {
-                throw "windeployqt.exe not found at $qtBin"
-              }
 
               Write-Host "Using windeployqt at: $qtBin"
               & $qtBin $exePath --release --compiler-runtime
