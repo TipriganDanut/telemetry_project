@@ -47,16 +47,18 @@ jobs:
           - name: Deploy Qt dependencies
             shell: pwsh
             run: |
-              if (-not $Env:Qt6_DIR) {
-              throw "Qt6_DIR is not set"
+              if (-not $Env:Qt6_INSTALL_DIR) {
+                throw "Qt6_INSTALL_DIR is not set"
               }
-              
-              # Qt6_DIR looks like: <QtRoot>/lib/cmake/
-              $qtRoot = (Get-Item $Env:Qt6_DIR).Parent.Parent.
-              $qtBin = Join-Path $qtRoot.FullName "bin\windeployqt.exe"
-              
+
+              $qtBin = Join-Path $Env:Qt6_INSTALL_DIR "bin\windeployqt.exe"
+
+              if (-not (Test-Path $qtBin)) {
+                throw "windeployqt.exe not found at $qtBin"
+              }
+
               Write-Host "Using windeployqt at: $qtBin"
-              & $qtBin build/VehicleTelemetryGUI.exe --release --compiler-runtime
+              & $qtBin build\VehicleTelemetryGUI.exe --release --compiler-runtime
                 
           - name: Upload packaged app 
             uses: actions/upload-artifact@v4 
