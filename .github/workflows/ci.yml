@@ -20,13 +20,13 @@ jobs:
                 target: desktop 
                 modules: qtcharts 
                 set-env: true
-
-          - name: Debug Qt install paths 
+          - name: Debug Qt install paths
             shell: pwsh 
             run: | 
+              Write-Host "Qt6_DIR = $Env:Qt6_DIR" 
+              Write-Host "Qt6_INSTALL_DIR = $Env:Qt6_INSTALL_DIR" 
               Write-Host "Qt6_DIR_FILE = $Env:Qt6_DIR_FILE" 
-              Write-Host "Contents:" 
-              Get-Content $Env:Qt6_DIR_FILE
+              if ($Env:Qt6_DIR_FILE) { Get-Content $Env:Qt6_DIR_FILE }
             
           - name: Install dependencies 
             run: | 
