@@ -46,6 +46,15 @@ jobs:
               "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" 
               cmake --build build --config Release 
 
+          - name: Inspect build output
+            shell: pwsh
+            run: |
+              Write-Host "=== CMake targets ==="
+              cmake --build build --target help
+
+              Write-Host "`n=== Files in build ==="
+              Get-ChildItem build -Recurse | Select-Object FullName
+
           - name: Deploy Qt dependencies
             shell: pwsh
             run: |
