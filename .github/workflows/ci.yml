@@ -44,13 +44,18 @@ jobs:
               "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" 
               cmake --build build --config Release 
 
-          - name: Deploy Qt dependencies 
-            shell: pwsh 
-            run: | 
-              $qtCmakeDir = Get-Content $Env:Qt6_DIR_FILE 
-              $qtRoot = (Get-Item $qtCmakeDir).Parent.Parent.Parent 
-              $qtBin = Join-Path $qtRoot.FullName "bin\windeployqt.exe" 
-              Write-Host "Using windeployqt at: $qtBin" 
+          - name: Deploy Qt dependencies
+            shell: pwsh
+            run: |
+              if (-not $Env:Qt6_DIR) {
+              throw "Qt6_DIR is not set"
+              }
+              
+              # Qt6_DIR looks like: <QtRoot>/lib/cmake/
+              $qtRoot = (Get-Item $Env:Qt6_DIR).Parent.Parent.
+              $qtBin = Join-Path $qtRoot.FullName "bin\windeployqt.exe"
+              
+              Write-Host "Using windeployqt at: $qtBin"
               & $qtBin build/VehicleTelemetryGUI.exe --release --compiler-runtime
                 
           - name: Upload packaged app 
