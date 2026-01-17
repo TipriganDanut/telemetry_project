@@ -12,7 +12,7 @@ add_library(SimulationLib
 	include/SimulationController.hpp 
 	include/TelemetryManager.hpp 
 	include/Vehicle.hpp
-) 
+ "include/IObserver.h" "include/ISubject.h") 
 
 target_include_directories(SimulationLib PUBLIC 
 	${CMAKE_CURRENT_SOURCE_DIR}/include 

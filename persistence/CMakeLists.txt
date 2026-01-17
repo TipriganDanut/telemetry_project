@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 add_library(PersistenceLib 
 	Database.cpp 
 	TelemetryRepository.cpp 
-) 
+ "ITelemetryRepository.h" "PersistenceObserver.cpp") 
 
 target_include_directories(PersistenceLib PUBLIC 
 	${CMAKE_CURRENT_SOURCE_DIR}

@@ -1,16 +1,15 @@
-#include "SimulationController.hpp"
+﻿#include "SimulationController.hpp"
 #include "TelemetryData.hpp"
-#include <iostream>
+#include "IObserver.h"
 #include <thread>
 #include <chrono> 
 
-SimulationController::SimulationController(Vehicle& v, TelemetryManager& t)
-	: running(false), /*This ensures the simulation thread won�t start doing anything until I explicitly call start() */
+SimulationController::SimulationController(Vehicle& v, TelemetryManager& t, ITelemetryRepository& r)
+	: running(false), /*This ensures the simulation thread won’t start doing anything until I explicitly call start() */
 	paused(false),
 	vehicle(v),		/* initialize reference - bind my member vehicle to refer to the object passed in as v */ 
 	telemetry(t),	/* initialize reference - bind my member vehicle to refer to the object passed in as v */
-	db("telemetry.db"), // creates or opens the DB */
-	repo(db) /* repository bound to this DB */ {} 
+	repo(r) /* repository bound to this DB */ {} 
 
 void SimulationController::start() {
 	if (running) {
@@ -56,8 +55,8 @@ void SimulationController::simulationLoop() {
 			// Collect telemetry snapshot
 			TelemetryData data = telemetry.collectData();
 
-			// Persist to SQLite
-			repo.insert(data, data.timestamp);
+			// Notify configured observers - broadcast the new data
+			notify(data);
 
 			// Notify GUI
 			emit telemetryUpdated(data);
@@ -66,6 +65,20 @@ void SimulationController::simulationLoop() {
 		}
 	}
 
+}
+
+void SimulationController::attach(IObserver* observer) {
+	observers.push_back(observer); 
+} 
+
+void SimulationController::detach(IObserver* observer) {
+	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end()); 
+} 
+
+void SimulationController::notify(const TelemetryData& data) {
+	for (auto* obs : observers) {
+		obs->update(data); // or update(data) depending on your IObserver 
+	} 
 }
 	
 	

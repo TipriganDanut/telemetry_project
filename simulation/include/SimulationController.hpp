@@ -1,24 +1,29 @@
-#pragma once 
+﻿#pragma once 
 #include "Vehicle.hpp" 
 #include "TelemetryManager.hpp"
-#include "Database.h"
-#include "TelemetryRepository.h"
+#include "ITelemetryRepository.h"
+#include "ISubject.h"
 #include <atomic>
 #include <QObject>
 #include <thread>
 
 struct TelemetryData;
 
-class SimulationController : public QObject {
+class SimulationController : public QObject, public ISubject {
 	Q_OBJECT
 public: 
-	explicit SimulationController(Vehicle&, TelemetryManager&);
+	explicit SimulationController(Vehicle& v, TelemetryManager& t, ITelemetryRepository& repo);
 	
 	void start();
 	void pause();
 	void resume();
 	void stop();
 	bool isRunning() const;
+
+	// ISubject overrides 
+	void attach(IObserver* obs) override;
+	void detach(IObserver* obs) override;
+	void notify(const TelemetryData& data) override;
 	
 
 private: 
@@ -32,8 +37,9 @@ private:
 
 	std::thread simThread;
 
-	Database db; 
-	TelemetryRepository repo;
+	ITelemetryRepository& repo;
+
+	std::vector<IObserver*> observers; // <— required by ISubject
 
 signals: 
 	void telemetryUpdated(const TelemetryData& data);
