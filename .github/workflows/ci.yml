@@ -20,6 +20,13 @@ jobs:
                 target: desktop 
                 modules: qtcharts 
                 set-env: true
+
+          - name: Debug Qt install paths 
+            shell: pwsh 
+            run: | 
+              Write-Host "Qt6_DIR_FILE = $Env:Qt6_DIR_FILE" 
+              Write-Host "Contents:" 
+              Get-Content $Env:Qt6_DIR_FILE
             
           - name: Install dependencies 
             run: | 
@@ -40,7 +47,9 @@ jobs:
           - name: Deploy Qt dependencies 
             shell: pwsh 
             run: | 
-              $qtBin = Join-Path $Env:Qt6_INSTALL_DIR "bin\windeployqt.exe" 
+              $qtCmakeDir = Get-Content $Env:Qt6_DIR_FILE 
+              $qtRoot = (Get-Item $qtCmakeDir).Parent.Parent.Parent 
+              $qtBin = Join-Path $qtRoot.FullName "bin\windeployqt.exe" 
               Write-Host "Using windeployqt at: $qtBin" 
               & $qtBin build/VehicleTelemetryGUI.exe --release --compiler-runtime
                 
