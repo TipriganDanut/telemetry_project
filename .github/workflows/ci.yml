@@ -49,16 +49,22 @@ jobs:
           - name: Deploy Qt dependencies
             shell: pwsh
             run: |
-              $exePath = "build\VehicleTelemetryGUI.exe"
+              $exe = Get-ChildItem build -Recurse -Filter "*.exe" |
+                     Where-Object { $_.Name -eq "VehicleTelemetryGUI.exe" } |
+                     Select-Object -First 1
 
-              if (-not (Test-Path $exePath)) {
-                throw "Executable not found at $exePath"
+              if (-not $exe) {
+                Write-Host "Available executables:"
+                Get-ChildItem build -Recurse -Filter "*.exe" | ForEach-Object {
+                  Write-Host " - $($_.FullName)"
+                }
+                throw "VehicleTelemetryGUI.exe not found anywhere under build/"
               }
 
-              $qtBin = Join-Path $Env:Qt6_INSTALL_DIR "bin\windeployqt.exe"
+              Write-Host "Found executable at: $($exe.FullName)"
 
-              Write-Host "Using windeployqt at: $qtBin"
-              & $qtBin $exePath --release --compiler-runtime
+              $qtBin = Join-Path $Env:Qt6_INSTALL_DIR "bin\windeployqt.exe"
+              & $qtBin $exe.FullName --release --compiler-runtime
                 
           - name: Upload packaged app
             uses: actions/upload-artifact@v4
