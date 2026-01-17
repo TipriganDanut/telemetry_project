@@ -39,8 +39,9 @@ jobs:
           - name: Deploy Qt dependencies 
             shell: pwsh 
             run: | 
-                $qtBin = (Get-Item $Env:Qt6_DIR).Parent.Parent.FullName + "\bin\windeployqt.exe" 
-                & $qtBin build/VehicleTelemetryGUI.exe --release --compiler-runtime 
+              $qtRoot = (Get-Item $Env:Qt6_DIR).Parent.Parent.Parent.FullName 
+              $qtBin = Join-Path $qtRoot "bin\windeployqt.exe" 
+              & $qtBin build/VehicleTelemetryGUI.exe --release --compiler-runtime
                 
           - name: Upload packaged app 
             uses: actions/upload-artifact@v4 
