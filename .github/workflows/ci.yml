@@ -19,6 +19,7 @@ jobs:
             version: 6.6.0
             host: windows 
             target: desktop
+            modules: qtcharts
 
       - name: Install dependencies 
         run: | 
@@ -28,13 +29,18 @@ jobs:
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release 
         
       - name: Build 
-        run: cmake --build build --config Release 
+        run: cmake --build build --config Release
+        
+      - name: Deploy Qt dependencies 
+        run: | 
+          $qtPath = "${Env:Qt6_DIR}\..\..\bin\windeployqt.exe" 
+          & $qtPath build/VehicleTelemetryGUI.exe --release --compiler-runtime
 
       - name: Upload executable 
         uses: actions/upload-artifact@v4 
         with: 
             name: VehicleTelemetryGUI 
-            path: build/VehicleTelemetryGUI.exe
+            path: build/
       
       - name: Run tests 
         run: ctest --test-dir build
