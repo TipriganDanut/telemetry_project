@@ -35,6 +35,13 @@ jobs:
             run: | 
               "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" 
               cmake --build build --config Release 
+          - name: Debug Qt paths 
+            shell: pwsh 
+            run: | 
+              Write-Host "Qt6_DIR = $Env:Qt6_DIR" Write-Host "Parent 1 = " (Get-Item $Env:Qt6_DIR).Parent.FullName
+              Write-Host "Parent 2 = " (Get-Item $Env:Qt6_DIR).Parent.Parent.FullName 
+              Write-Host "Parent 3 = " (Get-Item $Env:Qt6_DIR).Parent.Parent.Parent.FullName 
+              Write-Host "Parent 4 = " (Get-Item $Env:Qt6_DIR).Parent.Parent.Parent.Parent.FullName
               
           - name: Deploy Qt dependencies 
             shell: pwsh 
