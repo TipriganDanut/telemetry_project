@@ -62,6 +62,32 @@ jobs:
               Write-Host "`n=== Files in build ==="
               Get-ChildItem build -Recurse | Select-Object FullName
 
+          - name: Debug Qt paths
+            shell: pwsh
+            run: |
+              Write-Host "=== Environment variables ==="
+              Get-ChildItem Env: | Where-Object { $_.Name -match 'QT|Qt' } |
+                Sort-Object Name |
+                ForEach-Object { Write-Host "$($_.Name) = $($_.Value)" }
+
+              Write-Host "`n=== Where is windeployqt? ==="
+              where windeployqt 2>$null
+
+              Write-Host "`n=== Where is qmake? ==="
+              where qmake 2>$null
+
+              Write-Host "`n=== Qt directory tree (shallow) ==="
+              if ($Env:Qt6_DIR) {
+                $qtDir = Split-Path $Env:Qt6_DIR -Parent
+                Write-Host "Qt6_DIR parent = $qtDir"
+                Get-ChildItem $qtDir -Depth 3 -Directory
+              } else {
+                Write-Host "Qt6_DIR is NOT set"
+              }
+
+              Write-Host "`n=== Full PATH (Qt-related only) ==="
+              $Env:PATH -split ';' | Where-Object { $_ -match 'Qt' }
+
           - name: Deploy Qt dependencies
             shell: pwsh
             run: |
@@ -95,8 +121,7 @@ jobs:
             with:
               name: VehicleTelemetryGUI
               path: |
-                build\VehicleTelemetryGUI.exe
-                build\*.dll
+                build\
                 
           - name: Run tests 
             run: ctest --test-dir build
