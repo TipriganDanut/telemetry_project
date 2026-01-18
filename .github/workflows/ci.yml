@@ -88,6 +88,16 @@ jobs:
               Write-Host "`n=== Full PATH (Qt-related only) ==="
               $Env:PATH -split ';' | Where-Object { $_ -match 'Qt' }
 
+          - name: Debug windeployqt location
+            shell: pwsh
+            run: |
+              $qtBin = "D:\a\telemetry_project\Qt\6.6.0\msvc2019_64\bin"
+              Write-Host "Listing Qt bin:"
+              Get-ChildItem $qtBin
+
+              Write-Host "`nSearching for windeployqt.exe:"
+              Get-ChildItem "D:\a\telemetry_project\Qt\6.6.0\msvc2019_64" -Recurse -Filter windeployqt.exe
+
           - name: Deploy Qt dependencies
             shell: pwsh
             run: |
