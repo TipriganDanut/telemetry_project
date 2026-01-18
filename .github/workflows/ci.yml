@@ -15,11 +15,13 @@ jobs:
           - name: Install Qt 
             uses: jurplel/install-qt-action@v3 
             with: 
+                arch: win64_msvc2022_64
                 version: 6.6.0
                 host: windows 
                 target: desktop 
                 modules: qtcharts 
                 set-env: true
+
           - name: Debug Qt install paths
             shell: pwsh 
             run: | 
