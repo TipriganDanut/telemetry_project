@@ -13,15 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Qt 6.6.0 (MSVC 2022)
+      - name: Install Qt 6.10.1 (MSVC 2022)
         uses: jurplel/install-qt-action@v3
         with:
-          version: 6.6.0
+          version: 6.10.1
           host: windows
           target: desktop
           arch: win64_msvc2022_64
           modules: qtcharts
           set-env: true
+
 
       - name: Configure CMake
         shell: cmd
