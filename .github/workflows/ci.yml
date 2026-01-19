@@ -40,13 +40,13 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "Qt6_DIR = $Env:Qt6_DIR"
+
           if (-not $Env:Qt6_DIR) {
             throw "Qt6_DIR is empty — Qt installation failed."
           }
 
-          # Qt6_DIR = <QtRoot>/lib/cmake/Qt6
-          $qtRoot = (Get-Item $Env:Qt6_DIR).Parent.Parent.Parent.FullName
-          $windeployqt = Join-Path $qtRoot "bin\windeployqt.exe"
+          $windeployqt = Join-Path $Env:Qt6_DIR "bin\windeployqt.exe"
+          Write-Host "Using windeployqt at: $windeployqt"
 
           if (-not (Test-Path $windeployqt)) {
             throw "windeployqt.exe not found at $windeployqt"
@@ -57,7 +57,7 @@ jobs:
             throw "VehicleTelemetryGUI.exe not found"
           }
 
-          Write-Host "Deploying Qt dependencies for $($exe.FullName)"
+          Write-Host "Deploying Qt dependencies for: $($exe.FullName)"
           & $windeployqt $exe.FullName --release --compiler-runtime
 
       - name: Upload packaged build
