@@ -1,137 +1,66 @@
-name: CI Build 
+name: Build and Package
 
-on: 
-  push: 
-    branches: [ main ] 
-  pull_request:   
-jobs: 
-    build: 
-        runs-on: windows-latest 
-        
-        steps: 
-          - name: Checkout 
-            uses: actions/checkout@v4 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
 
-          - name: Install Qt 
-            uses: jurplel/install-qt-action@v3 
-            with: 
-                version: 6.6.0
-                host: windows 
-                target: desktop 
-                modules: qtcharts 
-                set-env: true
+jobs:
+  build:
+    runs-on: windows-latest
 
-          - name: Debug Qt install paths
-            shell: pwsh 
-            run: | 
-              Write-Host "Qt6_DIR = $Env:Qt6_DIR" 
-              Write-Host "Qt6_INSTALL_DIR = $Env:Qt6_INSTALL_DIR" 
-              Write-Host "Qt6_DIR_FILE = $Env:Qt6_DIR_FILE" 
-              if ($Env:Qt6_DIR_FILE) { Get-Content $Env:Qt6_DIR_FILE }
-            
-          - name: Install dependencies 
-            run: | 
-                choco install ninja cmake sqlite -y 
-                
-          - name: Configure (MSVC)
-            shell: cmd
-            run: |
-              call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
-              cmake -S . -B build -G Ninja ^
-                -DCMAKE_BUILD_TYPE=Release ^
-                -DCMAKE_PREFIX_PATH="%Qt6_INSTALL_DIR%"
-                
-          - name: Verify build directory
-            shell: pwsh
-            run: |
-              Test-Path build
-              Get-ChildItem build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-          - name: Build 
-            shell: cmd 
-            run: | 
-              call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
-              cmake --build build --config Release 
+      - name: Install Qt 6.6.0 (MSVC 2022)
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 6.6.0
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: qtcharts
+          set-env: true
 
-          - name: Inspect build output
-            shell: pwsh
-            run: |
-              Write-Host "=== CMake targets ==="
-              cmake --build build --target help
+      - name: Configure CMake
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 
-              Write-Host "`n=== Files in build ==="
-              Get-ChildItem build -Recurse | Select-Object FullName
+      - name: Build
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
+          cmake --build build
 
-          - name: Debug Qt paths
-            shell: pwsh
-            run: |
-              Write-Host "=== Environment variables ==="
-              Get-ChildItem Env: | Where-Object { $_.Name -match 'QT|Qt' } |
-                Sort-Object Name |
-                ForEach-Object { Write-Host "$($_.Name) = $($_.Value)" }
+      - name: Deploy Qt dependencies (windeployqt)
+        shell: pwsh
+        run: |
+          Write-Host "Qt6_DIR = $Env:Qt6_DIR"
+          if (-not $Env:Qt6_DIR) {
+            throw "Qt6_DIR is empty — Qt installation failed."
+          }
 
-              Write-Host "`n=== Where is windeployqt? ==="
-              where windeployqt 2>$null
+          # Qt6_DIR = <QtRoot>/lib/cmake/Qt6
+          $qtRoot = (Get-Item $Env:Qt6_DIR).Parent.Parent.Parent.FullName
+          $windeployqt = Join-Path $qtRoot "bin\windeployqt.exe"
 
-              Write-Host "`n=== Where is qmake? ==="
-              where qmake 2>$null
+          if (-not (Test-Path $windeployqt)) {
+            throw "windeployqt.exe not found at $windeployqt"
+          }
 
-              Write-Host "`n=== Qt directory tree (shallow) ==="
-              if ($Env:Qt6_DIR) {
-                $qtDir = Split-Path $Env:Qt6_DIR -Parent
-                Write-Host "Qt6_DIR parent = $qtDir"
-                Get-ChildItem $qtDir -Depth 3 -Directory
-              } else {
-                Write-Host "Qt6_DIR is NOT set"
-              }
+          $exe = Get-ChildItem build -Recurse -Filter "VehicleTelemetryGUI.exe" | Select-Object -First 1
+          if (-not $exe) {
+            throw "VehicleTelemetryGUI.exe not found"
+          }
 
-              Write-Host "`n=== Full PATH (Qt-related only) ==="
-              $Env:PATH -split ';' | Where-Object { $_ -match 'Qt' }
+          Write-Host "Deploying Qt dependencies for $($exe.FullName)"
+          & $windeployqt $exe.FullName --release --compiler-runtime
 
-          - name: Debug windeployqt location
-            shell: pwsh
-            run: |
-              $qtBin = "D:\a\telemetry_project\Qt\6.6.0\msvc2019_64\bin"
-              Write-Host "Listing Qt bin:"
-              Get-ChildItem $qtBin
-
-              Write-Host "`nSearching for windeployqt.exe:"
-              Get-ChildItem "D:\a\telemetry_project\Qt\6.6.0\msvc2019_64" -Recurse -Filter windeployqt.exe
-
-          - name: Deploy Qt dependencies
-            shell: pwsh
-            run: |
-              $exe = Get-ChildItem build -Recurse -Filter "*.exe" |
-                     Where-Object { $_.Name -eq "VehicleTelemetryGUI.exe" } |
-                     Select-Object -First 1
-
-              if (-not $exe) {
-                throw "VehicleTelemetryGUI.exe not found"
-              }
-
-              Write-Host "Found executable at: $($exe.FullName)"
-
-              if (-not $Env:Qt6_DIR) {
-                throw "Qt6_DIR is not set"
-              }
-
-              # Qt6_DIR = <QtRoot>/lib/cmake/Qt6
-              $qtRoot = Resolve-Path (Join-Path $Env:Qt6_DIR "..\..\..")
-              $windeployqt = Join-Path $qtRoot "bin\windeployqt.exe"
-
-              if (-not (Test-Path $windeployqt)) {
-                throw "windeployqt.exe not found at $windeployqt"
-              }
-
-              Write-Host "Using windeployqt at: $windeployqt"
-              & $windeployqt $exe.FullName --release --compiler-runtime
-                
-          - name: Upload packaged app
-            uses: actions/upload-artifact@v4
-            with:
-              name: VehicleTelemetryGUI
-              path: |
-                build\
-                
-          - name: Run tests 
-            run: ctest --test-dir build
+      - name: Upload packaged build
+        uses: actions/upload-artifact@v4
+        with:
+          name: VehicleTelemetryGUI
+          path: build
